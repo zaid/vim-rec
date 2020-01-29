@@ -14,8 +14,9 @@ syntax keyword recKeyword %unique
 syntax match recComment "\v^#.*$"
 syntax match recField "\v^[a-zA-Z]*\:"
 
-syntax match recNumber "\v\-?[1-9]+"
-syntax match recNumber "\v\-?[1-9]+\.[0-9]+"
+syntax match recNumber "\v\-?\d+"
+syntax match recNumber "\v\-?\d+\.\d+"
+syntax match recNumber "\v\-?0[0-7]+"
 syntax match recNumber "\v\-?0[xX][0-9a-fA-F]+"
 
 highlight default link recComment Comment
