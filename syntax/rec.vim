@@ -11,8 +11,8 @@ syntax keyword recKeyword %allowed %auto %confidential %constraint %doc %key
 syntax keyword recKeyword %mandatory %prohibit %rec %size %sort %type %typedef %unique
 syntax keyword recKeyword %unique
 
-syntax match recComment "\v#.*$"
-syntax match recField "\v[a-zA-Z]*\:"
+syntax match recComment "\v^#.*$"
+syntax match recField "\v^[a-zA-Z]*\:"
 
 syntax match recNumber "\v\-?[1-9]+"
 syntax match recNumber "\v\-?[1-9]+\.[0-9]+"
