@@ -17,8 +17,8 @@ syntax match recField "\v^[a-zA-Z]*\:"
 syntax keyword recType int bool range real size line regexp date contained containedin=recTypeAssociation,recTypeDeclaration
 syntax keyword recType enum field email uuid rec contained containedin=recTypeAssociation,recTypeDeclaration
 syntax region recTypeComment start="\v\(" end="\v\)" contained containedin=recTypeAssociation,recTypeDeclaration
-syntax match recTypeAssociation "\v^[\x25]type\: .*"hs=s,he=s+5 contains=recType
-syntax match recTypeDeclaration "\v^[\x25]typedef\: .*"hs=s,he=s+7 contains=recType
+syntax match recTypeAssociation "\v^[%]type\: .*"hs=s,he=s+5 contains=recType
+syntax match recTypeDeclaration "\v^[%]typedef\: .*"hs=s,he=s+7 contains=recType
 
 syntax match recNumber "\v\-?\d+"
 syntax match recNumber "\v\-?\d+\.\d+"
