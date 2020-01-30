@@ -19,6 +19,7 @@ syntax keyword recType enum field email uuid rec contained containedin=recTypeAs
 syntax region recTypeComment start="\v\(" end="\v\)" contained containedin=recTypeAssociation,recTypeDeclaration
 syntax match recTypeAssociation "\v^[%]type\: .*"hs=s,he=s+5 contains=recType
 syntax match recTypeDeclaration "\v^[%]typedef\: .*"hs=s,he=s+7 contains=recType
+syntax keyword recTypeLimit MIN MAX contained containedin=recTypeAssociation,recTypeDeclaration
 
 syntax match recNumber "\v\-?\d+"
 syntax match recNumber "\v\-?\d+\.\d+"
@@ -33,5 +34,6 @@ highlight default link recType Type
 highlight default link recTypeAssociation Keyword
 highlight default link recTypeComment Comment
 highlight default link recTypeDeclaration Keyword
+highlight default link recTypeLimit Constant
 
 let b:current_syntax = "rec"
