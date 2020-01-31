@@ -12,7 +12,7 @@ syntax keyword recKeyword %mandatory %prohibit %rec %size %sort %unique
 syntax keyword recKeyword %unique
 
 syntax match recComment "\v^#.*$"
-syntax match recField "\v^[a-zA-Z_]*\:"
+syntax match recField "\v^[a-zA-Z0-9_]*\:"
 
 syntax keyword recType int bool range real size line regexp date contained containedin=recTypeAssociation,recTypeDeclaration
 syntax keyword recType enum field email uuid rec contained containedin=recTypeAssociation,recTypeDeclaration
