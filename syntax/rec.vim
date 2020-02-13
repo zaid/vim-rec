@@ -14,6 +14,7 @@ syntax keyword recKeyword %unique
 syntax match recComment "\v^#.*$"
 syntax match recField "\v^[a-zA-Z0-9_]*"
 syntax match recComparisonOperator "\v\>?\<?\!?\=?" contained
+syntax match recMultilineMarker "\v^\+"
 
 syntax keyword recType int bool range real size line regexp date contained containedin=recTypeAssociation,recTypeDeclaration
 syntax keyword recType enum field email uuid rec contained containedin=recTypeAssociation,recTypeDeclaration
@@ -34,6 +35,7 @@ highlight default link recComparisonOperator Operator
 highlight default link recConstraintDeclaration Keyword
 highlight default link recField Identifier
 highlight default link recKeyword Keyword
+highlight default link recMultilineMarker Special
 highlight default link recNumber Number
 highlight default link recSizeDeclaration Keyword
 highlight default link recType Type
