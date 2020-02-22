@@ -12,7 +12,7 @@ syntax keyword recKeyword %mandatory %prohibit %rec %sort %unique
 syntax keyword recKeyword %unique
 
 syntax match recComment "\v^#.*$"
-syntax match recField "\v^[a-zA-Z0-9_]*"
+syntax match recField "\v^\w+"
 syntax match recComparisonOperator "\v\>?\<?\!?\=?" contained
 syntax match recMultilineMarker "\v^\+"
 
@@ -27,8 +27,8 @@ syntax match recSizeDeclaration "\v^[%]size\: .*"hs=s,he=s+5 contains=recCompari
 
 syntax match recNumber "\v\-?\d+"
 syntax match recNumber "\v\-?\d+\.\d+"
-syntax match recNumber "\v\-?0[0-7]+"
-syntax match recNumber "\v\-?0[xX][0-9a-fA-F]+"
+syntax match recNumber "\v\-?0\o+"
+syntax match recNumber "\v\-?0[xX]\x+"
 
 highlight default link recComment Comment
 highlight default link recComparisonOperator Operator
