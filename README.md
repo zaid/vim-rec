@@ -16,3 +16,13 @@ This plugin provides syntax highlighting and indentation for GNU Recutils' .rec 
   * If you're using minpac then you can install it by adding the following to your `.vimrc`:
 
     `call minpac#add('zaid/vim-rec')`
+
+## Features
+
+  * Syntax highlighting.
+  * Folding for records.
+
+## TODO
+
+  * Keymaps for formatting text.
+  * Wrappers for calling `recsel`, `recfix` ... etc.
