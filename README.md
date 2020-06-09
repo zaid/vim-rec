@@ -1,6 +1,6 @@
 # GNU Recutils syntax support for Vim
 
-This plugin provides syntax highlighting and indentation for GNU Recutils' .rec files.
+This plugin provides syntax highlighting and indentation for [GNU Recutils](https://www.gnu.org/software/recutils/)' .rec files.
 
 ## Installation
 
@@ -21,8 +21,10 @@ This plugin provides syntax highlighting and indentation for GNU Recutils' .rec 
 
   * Syntax highlighting.
   * Folding for records.
+  * Command wrappers for `recsel` and `recinf`.
+
+  See `help :recutils` for more information.
 
 ## TODO
 
   * Keymaps for formatting text.
-  * Wrappers for calling `recsel`, `recfix` ... etc.

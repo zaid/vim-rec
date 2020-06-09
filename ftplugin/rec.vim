@@ -45,3 +45,7 @@ if has('folding')
   setlocal foldmethod=expr
   setlocal foldexpr=GetRecFold(v:lnum)
 endif
+
+" Define commands wrappers for GNU Recutils
+command! -nargs=* Recsel call rec#ExecuteCommand('recsel', <f-args>)
+command! -nargs=* Recinf call rec#ExecuteCommand('recinf', <f-args>)

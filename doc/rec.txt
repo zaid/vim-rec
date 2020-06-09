@@ -1,0 +1,18 @@
+*recutils.txt* GNU Recutils support for Vim
+
+Author: Zaid Al-Jarrah
+License: Same terms as Vim itself (see |license|)
+
+INTRODUCTION                                *recutils*
+
+The set of commands below will be available whenever you edit a .rec file.
+
+COMMANDS                                    *recutils-commands*
+
+:Recsel {args}              Run recsel with the supplied arguments and display
+                            the output in a |location-list| in the current window.
+
+:Recinf {args}              Run recinf with the supplied arguments and display the
+                            output in a |location-list| in the current window.
+
+" vim:tw=78:ft=help
