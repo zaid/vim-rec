@@ -7,8 +7,11 @@ let g:autoloaded_rec = 1
 
 " Execute a command with arguments (either synchronously or asynchronously).
 function! rec#ExecuteCommand(command, ...) abort
-  let commandWithArguments = [a:command] + a:000
+  let commandWithArguments = [a:command]
+  let filename = fnameescape(s:GetFilenameFromArgumentsList(a:000, expand('%@')))
+  let arguments = s:GetCommandArgumentsFromArgumentsList(a:000)
 
+  call extend(commandWithArguments, [filename] + arguments)
   call s:PrepareLocationWindow(join(commandWithArguments))
 
   if s:SupportsAsyncJobs()
@@ -60,4 +63,17 @@ function! s:JobCallback(channel, msg, ...) abort
   let output = type(a:msg) == type([]) ? join(a:msg, "\n") : a:msg
   call setloclist(0, [], 'a', {'lines': split(output, "\n", 1)})
   lopen
+endfunction
+
+function! s:GetFilenameFromArgumentsList(arguments, defaultValue) abort
+  if empty(a:arguments)
+    return a:defaultValue
+  endif
+
+  let filename = filter(copy(a:arguments), { idx, entry -> match(expand(entry), '\v[[:alnum:]]+\.rec$') != -1 })->get(0)->expand()
+  return filename->empty() ? a:defaultValue : filename
+endfunction
+
+function! s:GetCommandArgumentsFromArgumentsList(arguments) abort
+  return filter(copy(a:arguments), { idx, entry -> match(expand(entry), '\v[[:alnum:]]+\.rec$') == -1 || empty(entry) })
 endfunction

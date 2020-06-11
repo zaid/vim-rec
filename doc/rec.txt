@@ -9,6 +9,9 @@ The set of commands below will be available whenever you edit a .rec file.
 
 COMMANDS                                    *recutils-commands*
 
+These commands operate on buffers so you don't have to pass them a filepath as an
+argument (unless you want to run the command on a different file).
+
 :Recsel {args}              Run recsel with the supplied arguments and display
                             the output in a |location-list| in the current window.
 

@@ -25,6 +25,16 @@ This plugin provides syntax highlighting and indentation for [GNU Recutils](http
 
   See `help :recutils` for more information.
 
+## Examples
+
+### Recsel
+  To query the `Title` of any book with a rating over `4`, you can execute the following:
+  `:Recsel -t Book -p Title -e Rating>4`
+
+### Recinf
+  To query the descriptors of records stored in a specifc `.rec` buffer, you can execute the following:
+  `:Recinf -d`
+
 ## TODO
 
   * Keymaps for formatting text.
