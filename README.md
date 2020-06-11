@@ -21,11 +21,18 @@ This plugin provides syntax highlighting and indentation for [GNU Recutils](http
 
   * Syntax highlighting.
   * Folding for records.
-  * Command wrappers for `recsel` and `recinf`.
+  * Command wrappers for `recsel`, `recfix` and `recinf`.
 
   See `help :recutils` for more information.
 
 ## Examples
+
+### Recfix
+   To find any syntax errors in the file, you can run `:Recfix` in any `.rec` buffer
+   and the syntax errors will be loaded in a local `location-list` where you'll be
+   able to navigate the list and jump straight to the line with the error.
+
+   *Note* The `location-list` will not open if there are no errors in the file.
 
 ### Recsel
   To query the `Title` of any book with a rating over `4`, you can execute the following:

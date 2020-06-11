@@ -18,4 +18,10 @@ argument (unless you want to run the command on a different file).
 :Recinf {args}              Run recinf with the supplied arguments and display the
                             output in a |location-list| in the current window.
 
+:Recfix {args}              Run recfix with the supplied arguments and display
+                            the output in a |location-list| in the current window.
+                            If there are no syntax errors in the file then the
+                            |location-list| will not open, otherwise you will be
+                            able to navigate the list and jump to the sy
+
 " vim:tw=78:ft=help

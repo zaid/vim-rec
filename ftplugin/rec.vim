@@ -49,3 +49,4 @@ endif
 " Define commands wrappers for GNU Recutils
 command! -nargs=* Recsel call rec#ExecuteCommand('recsel', <f-args>)
 command! -nargs=* Recinf call rec#ExecuteCommand('recinf', <f-args>)
+command! -nargs=* Recfix call rec#ExecuteCommand('recfix', <f-args>)
