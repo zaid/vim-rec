@@ -52,10 +52,12 @@ function! s:ExecuteSyncCommand(commandWithArguments) abort
   call s:JobCallback('', output)
 endfunction
 
-" Prepare the location list by clearing it and setting the tile to the command
-" that we're going to execute plus it's arguments.
+" Prepare the location list by clearing it's content, setting the title to the command
+" that we're going to execute (plus it's arguments) then closing the window
+" (in case it was open from a previous run).
 function! s:PrepareLocationWindow(command) abort
   call setloclist(0, [], 'r', {'title': a:command, 'lines': []})
+  lclose
 endfunction
 
 " The job execution callback which appends the output to the location list.
