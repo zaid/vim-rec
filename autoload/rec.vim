@@ -72,8 +72,8 @@ function! s:GetFilenameFromArgumentsList(arguments, defaultValue) abort
     return a:defaultValue
   endif
 
-  let filename = filter(copy(a:arguments), { idx, entry -> match(expand(entry), '\v[[:alnum:]]+\.rec$') != -1 })->get(0)
-  return filename->empty() ? a:defaultValue : expand(filename)
+  let filename = filter(copy(a:arguments), {idx, entry -> match(expand(entry), '\v[[:alnum:]]+\.rec$') != -1})
+  return empty(filename) ? a:defaultValue : expand(get(filename, 0))
 endfunction
 
 function! s:GetCommandArgumentsFromArgumentsList(arguments) abort
