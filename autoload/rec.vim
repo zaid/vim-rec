@@ -11,7 +11,7 @@ function! rec#ExecuteCommand(command, ...) abort
   let filename = fnameescape(s:GetFilenameFromArgumentsList(a:000, expand('%@')))
   let arguments = s:GetCommandArgumentsFromArgumentsList(a:000)
 
-  call extend(commandWithArguments, [filename] + arguments)
+  call extend(commandWithArguments, arguments + [filename])
   call s:PrepareLocationWindow(join(commandWithArguments))
 
   if s:SupportsAsyncJobs()
