@@ -42,6 +42,13 @@ This plugin provides syntax highlighting and indentation for [GNU Recutils](http
   To query the descriptors of records stored in a specifc `.rec` buffer, you can execute the following:
   `:Recinf -d`
 
+## Notes
+
+  Whitespace might need to be escaped in certain scenarios. For example, the following line:
+  `:Recsel -t Book -p Title -e Rating>4`
+  can be rewritten as:
+  `:Recsel -t Book -p Title -e Rating\ >\ 4` 
+
 ## TODO
 
   * Keymaps for formatting text.
