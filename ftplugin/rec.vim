@@ -41,7 +41,7 @@ function! s:IsRecBlankLine(line) abort
 endfunction
 
 " Enable folding if Vim was compiled with +folding support
-if has('folding')
+if has('folding') && !get(g:, 'recutils_no_folding')
   setlocal foldmethod=expr
   setlocal foldexpr=GetRecFold(v:lnum)
 endif

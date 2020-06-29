@@ -20,7 +20,7 @@ This plugin provides syntax highlighting and indentation for [GNU Recutils](http
 ## Features
 
   * Syntax highlighting.
-  * Folding for records.
+  * Folding for records. (can be disabled by setting the `g:recutils_no_folding` variable to `1`).
   * Command wrappers for `recsel`, `recfix` and `recinf`.
 
   See `help :recutils` for more information.
