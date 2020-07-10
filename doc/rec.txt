@@ -13,15 +13,32 @@ These commands operate on buffers so you don't have to pass them a filepath as a
 argument (unless you want to run the command on a different file).
 
 :Recsel {args}              Run recsel with the supplied arguments and display
-                            the output in a |location-list| in the current window.
+                            the output in a |location-list| in the current
+                            window.
 
-:Recinf {args}              Run recinf with the supplied arguments and display the
-                            output in a |location-list| in the current window.
+:Recinf {args}              Run recinf with the supplied arguments and display
+                            the output in a |location-list| in the current
+                            window.
 
 :Recfix {args}              Run recfix with the supplied arguments and display
-                            the output in a |location-list| in the current window.
+                            the output in a |location-list| in the current
+                            window.
                             If there are no syntax errors in the file then the
                             |location-list| will not open, otherwise you will be
-                            able to navigate the list and jump to the sy
+                            able to navigate the list and jump to the syntax
+                            errors directly.
+
+MAPS                                        *recutils-maps*
+
+These |recutils-commands| maps are available in the |recutils| buffers only.
+
+<localleader>rf             Invokes `:Recfix --check` on the current buffer.
+<localleader>rn             Populates the command line with :Recinf.
+<localleader>rs             Populates the command line with :Recsel.
+
+The above maps can be disabled by setting the g:recutils_no_maps option.
+>
+  let g:recutils_no_maps = 1
+<
 
 " vim:tw=78:ft=help

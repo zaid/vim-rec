@@ -50,3 +50,10 @@ endif
 command! -nargs=* Recsel call rec#ExecuteCommand('recsel', <f-args>)
 command! -nargs=* Recinf call rec#ExecuteCommand('recinf', <f-args>)
 command! -nargs=* Recfix call rec#ExecuteCommand('recfix', <f-args>)
+
+" Define command maps
+if !get(g:, 'recutils_no_maps')
+  nnoremap <buffer> <localleader>rf :Recfix --check<cr>
+  nnoremap <buffer> <localleader>rn :Recinf<space>
+  nnoremap <buffer> <localleader>rs :Recsel<space>
+endif
