@@ -52,7 +52,7 @@ This plugin provides syntax highlighting and indentation for [GNU Recutils](http
 ## Command maps
 
   There are 3 command maps defined (which can be disabled by setting the `g:recutils_no_maps` variable to `1`):
-  * `<localleader>rf` populates the Vim command line with `:Recfix`.
+  * `<localleader>rf` Invokes `:Recfix --check` on the current buffer.
   * `<localleader>rn` populates the Vim command line with `:Recinf`.
   * `<localleader>rs` populates the Vim command line with `:Recsel`.
 
