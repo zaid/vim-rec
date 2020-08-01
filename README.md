@@ -59,3 +59,7 @@ This plugin provides syntax highlighting and indentation for [GNU Recutils](http
 ## TODO
 
   * Keymaps for formatting text.
+  
+## License
+
+Copyright Zaid Al-Jarrah. Distributed under the same terms as Vim itself. See `:help license`.
