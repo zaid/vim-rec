@@ -29,17 +29,12 @@ endfunction
 " Execute a command asynchronously and populate the location list with the
 " results.
 function! s:ExecuteAsyncCommand(commandWithArguments) abort
+  let command = a:commandWithArguments[0]
+
   if exists('*job_start')
-    let callbackFunctions = {
-          \ 'callback': function('s:JobCallback')
-          \ }
-    let s:job = job_start(a:commandWithArguments, callbackFunctions)
+    let s:job = job_start(a:commandWithArguments, s:GetCallbackFunctionsForVim(l:command))
   elseif exists('*jobstart')
-    let callbackFunctions = {
-          \ 'on_stdout': function('s:JobCallback'),
-          \ 'on_stderr': function('s:JobCallback'),
-          \ }
-    let s:job = jobstart(a:commandWithArguments, callbackFunctions)
+    let s:job = jobstart(a:commandWithArguments, s:GetCallbackFunctionsForNeovim(l:command))
   else
     throw 'No supported job control mechanism found.'
   endif
@@ -48,8 +43,11 @@ endfunction
 " Execute a command synchronously and populate the location list with the
 " results.
 function! s:ExecuteSyncCommand(commandWithArguments) abort
+  let command = a:commandWithArguments[0]
   let output = system(join(a:commandWithArguments))
-  call s:JobCallback('', output)
+  let callbackFunction = s:GetOutputCallbackFunctionName(l:command)
+
+  call function(l:callbackFunction)('', l:output)
 endfunction
 
 " Prepare the location list by clearing it's content, setting the title to the command
@@ -61,7 +59,7 @@ function! s:PrepareLocationWindow(command) abort
 endfunction
 
 " The job execution callback which appends the output to the location list.
-function! s:JobCallback(channel, msg, ...) abort
+function! s:LocationListJobCallback(channel, msg, ...) abort
   let output = type(a:msg) == type([]) ? join(a:msg, "\n") : a:msg
   call setloclist(0, [], 'a', {'lines': split(output, "\n", 1)})
   lopen
@@ -78,4 +76,30 @@ endfunction
 
 function! s:GetCommandArgumentsFromArgumentsList(arguments) abort
   return filter(copy(a:arguments), { idx, entry -> match(expand(entry), '\v[[:alnum:]]+\.rec$') == -1 || empty(entry) })
+endfunction
+
+" Get the success callback function name for a specific command.
+function! s:GetOutputCallbackFunctionName(command) abort
+  return 's:LocationListJobCallback'
+endfunction
+
+" Get the error callback function name for a specific command.
+function! s:GetErrorCallbackFunctionName(command) abort
+  return 's:LocationListJobCallback'
+endfunction
+
+" Return a dictionary with the callback function names for Vim.
+function! s:GetCallbackFunctionsForVim(command) abort
+  return {
+        \ 'out_cb': function(s:GetOutputCallbackFunctionName(a:command)),
+        \ 'err_cb': function(s:GetErrorCallbackFunctionName(a:command)),
+        \ }
+endfunction
+
+" Return a dictionary with the callback function names for Neovim.
+function! s:GetCallbackFunctionsForNeovim(command) abort
+  return {
+        \ 'on_stdout': function(s:GetOutputCallbackFunctionName(a:command)),
+        \ 'on_stderr': function(s:GetErrorCallbackFunctionName(a:command)),
+        \ }
 endfunction
