@@ -11,13 +11,13 @@ function! rec#ExecuteCommand(command, ...) abort
   let filename = fnameescape(s:GetFilenameFromArgumentsList(a:000, expand('%@')))
   let arguments = s:GetCommandArgumentsFromArgumentsList(a:000)
 
-  call extend(commandWithArguments, arguments + [filename])
-  call s:PrepareLocationWindow(join(commandWithArguments))
+  call extend(l:commandWithArguments, l:arguments + [l:filename])
+  call s:PrepareLocationWindow(join(l:commandWithArguments))
 
   if s:SupportsAsyncJobs()
-    call s:ExecuteAsyncCommand(commandWithArguments)
+    call s:ExecuteAsyncCommand(l:commandWithArguments)
   else
-    call s:ExecuteSyncCommand(commandWithArguments)
+    call s:ExecuteSyncCommand(l:commandWithArguments)
   endif
 endfunction
 
@@ -61,7 +61,7 @@ endfunction
 " The job execution callback which appends the output to the location list.
 function! s:LocationListJobCallback(channel, msg, ...) abort
   let output = type(a:msg) == type([]) ? join(a:msg, "\n") : a:msg
-  call setloclist(0, [], 'a', {'lines': split(output, "\n", 1)})
+  call setloclist(0, [], 'a', {'lines': split(l:output, "\n", 1)})
   lopen
 endfunction
 
