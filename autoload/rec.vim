@@ -65,6 +65,7 @@ function! s:LocationListJobCallback(channel, msg, ...) abort
   lopen
 endfunction
 
+" Parse the command arguments and return the filename.
 function! s:GetFilenameFromArgumentsList(arguments, defaultValue) abort
   if empty(a:arguments)
     return a:defaultValue
@@ -74,6 +75,7 @@ function! s:GetFilenameFromArgumentsList(arguments, defaultValue) abort
   return empty(filename) ? a:defaultValue : expand(get(filename, 0))
 endfunction
 
+" Parse the command arguments and return a list without the filename.
 function! s:GetCommandArgumentsFromArgumentsList(arguments) abort
   return filter(copy(a:arguments), { idx, entry -> match(expand(entry), '\v[[:alnum:]]+\.rec$') == -1 || empty(entry) })
 endfunction
