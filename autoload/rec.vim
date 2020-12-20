@@ -5,19 +5,34 @@ if exists('g:autoloaded_rec')
 endif
 let g:autoloaded_rec = 1
 
+" Execute recsel command with arguments.
+function! rec#Recsel(...) abort
+  call s:ExecuteCommand('recsel', s:GetLocationListCallbackFunctions(), a:000)
+endfunction
+
+" Execute recinf command with arguments.
+function! rec#Recinf(...) abort
+  call s:ExecuteCommand('recinf', s:GetLocationListCallbackFunctions(), a:000)
+endfunction
+
+" Execute recfix command with arguments.
+function! rec#Recfix(...) abort
+  call s:ExecuteCommand('recfix', s:GetLocationListCallbackFunctions(), a:000)
+endfunction
+
 " Execute a command with arguments (either synchronously or asynchronously).
-function! rec#ExecuteCommand(command, ...) abort
+function! s:ExecuteCommand(command, callbackFunctions, arguments) abort
   let commandWithArguments = [a:command]
-  let filename = fnameescape(s:GetFilenameFromArgumentsList(a:000, expand('%@')))
-  let arguments = s:GetCommandArgumentsFromArgumentsList(a:000)
+  let filename = fnameescape(s:GetFilenameFromArgumentsList(a:arguments, expand('%@')))
+  let arguments = s:GetCommandArgumentsFromArgumentsList(a:arguments)
 
   call extend(l:commandWithArguments, l:arguments + [l:filename])
   call s:PrepareLocationWindow(join(l:commandWithArguments))
 
   if s:SupportsAsyncJobs()
-    call s:ExecuteAsyncCommand(l:commandWithArguments)
+    call s:ExecuteAsyncCommand(a:callbackFunctions, l:commandWithArguments)
   else
-    call s:ExecuteSyncCommand(l:commandWithArguments)
+    call s:ExecuteSyncCommand(a:callbackFunctions, l:commandWithArguments)
   endif
 endfunction
 
@@ -28,13 +43,13 @@ endfunction
 
 " Execute a command asynchronously and populate the location list with the
 " results.
-function! s:ExecuteAsyncCommand(commandWithArguments) abort
+function! s:ExecuteAsyncCommand(callbackFunctions, commandWithArguments) abort
   let command = a:commandWithArguments[0]
 
   if exists('*job_start')
-    let s:job = job_start(a:commandWithArguments, s:GetCallbackFunctionsForVim(l:command))
+    let s:job = job_start(a:commandWithArguments, a:callbackFunctions)
   elseif exists('*jobstart')
-    let s:job = jobstart(a:commandWithArguments, s:GetCallbackFunctionsForNeovim(l:command))
+    let s:job = jobstart(a:commandWithArguments, a:callbackFunctions)
   else
     throw 'No supported job control mechanism found.'
   endif
@@ -42,12 +57,12 @@ endfunction
 
 " Execute a command synchronously and populate the location list with the
 " results.
-function! s:ExecuteSyncCommand(commandWithArguments) abort
+function! s:ExecuteSyncCommand(callbackFunctions, commandWithArguments) abort
   let command = a:commandWithArguments[0]
   let output = system(join(a:commandWithArguments))
-  let callbackFunction = s:GetOutputCallbackFunctionName(l:command)
+  let OutputCallbackFunction = get(a:callbackFunctions, 'out_cb', get(a:callbackFunctions, 'on_stdout'))
 
-  call function(l:callbackFunction)('', l:output)
+  call function(l:OutputCallbackFunction)('', l:output)
 endfunction
 
 " Prepare the location list by clearing it's content, setting the title to the command
@@ -80,28 +95,19 @@ function! s:GetCommandArgumentsFromArgumentsList(arguments) abort
   return filter(copy(a:arguments), { idx, entry -> match(expand(entry), '\v[[:alnum:]]+\.rec$') == -1 || empty(entry) })
 endfunction
 
-" Get the success callback function name for a specific command.
-function! s:GetOutputCallbackFunctionName(command) abort
-  return 's:LocationListJobCallback'
-endfunction
+" Return a dictionary with the callback function names for location-list
+" output.
 
-" Get the error callback function name for a specific command.
-function! s:GetErrorCallbackFunctionName(command) abort
-  return 's:LocationListJobCallback'
-endfunction
+function! s:GetLocationListCallbackFunctions() abort
+  let callbacks = {}
 
-" Return a dictionary with the callback function names for Vim.
-function! s:GetCallbackFunctionsForVim(command) abort
-  return {
-        \ 'out_cb': function(s:GetOutputCallbackFunctionName(a:command)),
-        \ 'err_cb': function(s:GetErrorCallbackFunctionName(a:command)),
-        \ }
-endfunction
+  if exists('*job_start')
+    let l:callbacks['out_cb'] = function('s:LocationListJobCallback')
+    let l:callbacks['err_cb'] = function('s:LocationListJobCallback')
+  elseif exists('*jobstart')
+    let l:callbacks['on_stdout'] = function('s:LocationListJobCallback')
+    let l:callbacks['on_stderr'] = function('s:LocationListJobCallback')
+  endif
 
-" Return a dictionary with the callback function names for Neovim.
-function! s:GetCallbackFunctionsForNeovim(command) abort
-  return {
-        \ 'on_stdout': function(s:GetOutputCallbackFunctionName(a:command)),
-        \ 'on_stderr': function(s:GetErrorCallbackFunctionName(a:command)),
-        \ }
+  return l:callbacks
 endfunction

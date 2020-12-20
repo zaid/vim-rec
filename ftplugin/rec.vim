@@ -47,9 +47,9 @@ if has('folding') && !get(g:, 'recutils_no_folding')
 endif
 
 " Define commands wrappers for GNU Recutils
-command! -nargs=* Recsel call rec#ExecuteCommand('recsel', <f-args>)
-command! -nargs=* Recinf call rec#ExecuteCommand('recinf', <f-args>)
-command! -nargs=* Recfix call rec#ExecuteCommand('recfix', <f-args>)
+command! -nargs=* Recsel call rec#Recsel(<f-args>)
+command! -nargs=* Recinf call rec#Recinf(<f-args>)
+command! -nargs=* Recfix call rec#Recfix(<f-args>)
 
 " Define command maps
 if !get(g:, 'recutils_no_maps')
