@@ -20,6 +20,11 @@ function! rec#Recfix(...) abort
   call s:ExecuteCommand('recfix', s:GetLocationListCallbackFunctions(), a:000)
 endfunction
 
+" Execute rec2csv command with arguments.
+function! rec#Rec2csv(...) abort
+  call s:ExecuteCommand('rec2csv', s:GetBufferCallbackFunctions(a:000), a:000)
+endfunction
+
 " Execute a command with arguments (either synchronously or asynchronously).
 function! s:ExecuteCommand(command, callbackFunctions, arguments) abort
   let commandWithArguments = [a:command]
@@ -76,8 +81,28 @@ endfunction
 " The job execution callback which appends the output to the location list.
 function! s:LocationListJobCallback(channel, msg, ...) abort
   let output = type(a:msg) == type([]) ? join(a:msg, "\n") : a:msg
-  call setloclist(0, [], 'a', {'lines': split(l:output, "\n", 1)})
-  lopen
+
+  if strlen(l:output) > 0
+    call setloclist(0, [], 'a', {'lines': split(l:output, "\n", 1)})
+    lopen
+  endif
+endfunction
+
+" The job execution callback which appends the output to a named buffer.
+function! s:BufferJobCallback(bufferNumber, channel, msg, ...) abort
+  call appendbufline(a:bufferNumber, '$', a:msg)
+endfunction
+
+" The job exit callback which splits the window and loads the specified
+" buffer.
+function! s:BufferExitJobCallback(bufferNumber, ...) abort
+  if strlen(join(getbufline(a:bufferNumber, 1))) == 0
+    call deletebufline(a:bufferNumber, 1)
+  endif
+
+  if bufwinid(a:bufferNumber) == -1
+    execute 'sbuffer' . a:bufferNumber
+  endif
 endfunction
 
 " Parse the command arguments and return the filename.
@@ -110,4 +135,34 @@ function! s:GetLocationListCallbackFunctions() abort
   endif
 
   return l:callbacks
+endfunction
+
+" Return a dictionary with the callback function names for location-list
+" output.
+function! s:GetBufferCallbackFunctions(arguments) abort
+  let callbacks = {}
+  let filename = s:GetFilenameFromArgumentsList(a:arguments, expand('%@'))
+  let bufferNumber = s:AddCsvBuffer(l:filename)
+
+  if exists('*job_start')
+    let l:callbacks['out_cb'] = function('s:BufferJobCallback', [l:bufferNumber])
+    let l:callbacks['err_cb'] = function('s:LocationListJobCallback')
+    let l:callbacks['exit_cb'] = function('s:BufferExitJobCallback', [l:bufferNumber])
+  elseif exists('*jobstart')
+    let l:callbacks['on_stdout'] = function('s:BufferJobCallback', [l:bufferNumber])
+    let l:callbacks['on_stderr'] = function('s:LocationListJobCallback')
+    let l:callbacks['on_exit'] = function('s:BufferExitJobCallback', [l:bufferNumber])
+  end
+
+  return l:callbacks
+endfunction
+
+function! s:AddCsvBuffer(filename) abort
+  let csvFilename = substitute(a:filename, '\.rec', '.csv', '')
+  let csvBuffer = bufadd(l:csvFilename)
+  call bufload(l:csvBuffer)
+  call setbufvar(l:csvBuffer, '&buflisted', 1)
+  call deletebufline(l:csvBuffer, 1, '$')
+
+  return l:csvBuffer
 endfunction

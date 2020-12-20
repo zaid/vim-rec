@@ -21,7 +21,7 @@ This plugin provides syntax highlighting and indentation for [GNU Recutils](http
 
   * Syntax highlighting.
   * Folding for records. (can be disabled by setting the `g:recutils_no_folding` variable to `1`).
-  * Command wrappers for `recsel`, `recfix` and `recinf`.
+  * Command wrappers for `recsel`, `recfix`, `recinf` and `rec2csv`.
 
   See `help :recutils` for more information.
 
@@ -42,6 +42,10 @@ This plugin provides syntax highlighting and indentation for [GNU Recutils](http
   To query the descriptors of records stored in a specifc `.rec` buffer, you can execute the following:
   `:Recinf -d`
 
+### Rec2csv
+  To convert Rec data into CSV format and populate it in a split buffer, you can execute the following:
+  `:Rec2csv -tBook`
+
 ## Notes
 
   Whitespace might need to be escaped in certain scenarios. For example, the following line:
@@ -55,6 +59,7 @@ This plugin provides syntax highlighting and indentation for [GNU Recutils](http
   * `<localleader>rf` Invokes `:Recfix --check` on the current buffer.
   * `<localleader>rn` populates the Vim command line with `:Recinf`.
   * `<localleader>rs` populates the Vim command line with `:Recsel`.
+  * `<localleader>rv` populates the Vim command line with `:Rec2csv`.
 
 ## TODO
 
