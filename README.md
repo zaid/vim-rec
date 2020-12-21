@@ -1,6 +1,6 @@
 # GNU Recutils syntax support for Vim
 
-This plugin provides syntax highlighting and indentation for [GNU Recutils](https://www.gnu.org/software/recutils/)' .rec files.
+This plugin provides syntax highlighting and runtime support for [GNU Recutils](https://www.gnu.org/software/recutils/)' .rec files.
 
 ## Installation
 
@@ -55,7 +55,7 @@ This plugin provides syntax highlighting and indentation for [GNU Recutils](http
 
 ## Command maps
 
-  There are 3 command maps defined (which can be disabled by setting the `g:recutils_no_maps` variable to `1`):
+  There are 4 command maps defined (which can be disabled by setting the `g:recutils_no_maps` variable to `1`):
   * `<localleader>rf` Invokes `:Recfix --check` on the current buffer.
   * `<localleader>rn` populates the Vim command line with `:Recinf`.
   * `<localleader>rs` populates the Vim command line with `:Recsel`.
@@ -64,7 +64,8 @@ This plugin provides syntax highlighting and indentation for [GNU Recutils](http
 ## TODO
 
   * Keymaps for formatting text.
-  
+  * Omni completion for record sets.
+
 ## License
 
 Copyright Zaid Al-Jarrah. Distributed under the same terms as Vim itself. See `:help license`.
