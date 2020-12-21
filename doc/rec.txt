@@ -28,6 +28,9 @@ argument (unless you want to run the command on a different file).
                             able to navigate the list and jump to the syntax
                             errors directly.
 
+:Rec2csv {args}             Run rec2csv with the supplied arguments and
+                            display the output in a split horizontal buffer
+                            in the current window.
 MAPS                                        *recutils-maps*
 
 These |recutils-commands| maps are available in the |recutils| buffers only.
@@ -35,6 +38,7 @@ These |recutils-commands| maps are available in the |recutils| buffers only.
 <localleader>rf             Invokes `:Recfix --check` on the current buffer.
 <localleader>rn             Populates the command line with :Recinf.
 <localleader>rs             Populates the command line with :Recsel.
+<localleader>rv             Populates the command line with :Rec2csv
 
 The above maps can be disabled by setting the g:recutils_no_maps option.
 >
