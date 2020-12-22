@@ -22,6 +22,7 @@ This plugin provides syntax highlighting and runtime support for [GNU Recutils](
   * Syntax highlighting.
   * Folding for records. (can be disabled by setting the `g:recutils_no_folding` variable to `1`).
   * Command wrappers for `recsel`, `recfix`, `recinf` and `rec2csv`.
+  * Auto-completion of record set properties.
 
   See `help :recutils` for more information.
 
@@ -61,10 +62,14 @@ This plugin provides syntax highlighting and runtime support for [GNU Recutils](
   * `<localleader>rs` populates the Vim command line with `:Recsel`.
   * `<localleader>rv` populates the Vim command line with `:Rec2csv`.
 
+## Auto-completion
+
+  Basic support for auto-completing record set properties is available (by using `C-X C-O` when in insert mode).
+  It can be disabled by setting the `g:recutils_no_autocompletion` variable to `1`.
+
 ## TODO
 
   * Keymaps for formatting text.
-  * Omni completion for record sets.
 
 ## License
 

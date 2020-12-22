@@ -45,4 +45,13 @@ The above maps can be disabled by setting the g:recutils_no_maps option.
   let g:recutils_no_maps = 1
 <
 
+AUTO COMPLETION                             *recutils-autocompletion*
+
+Basic support for auto-completing record set properties is available (by using
+C-X C-O while in insert mode).
+
+It can be disabled by setting the g:recutils_no_autocompletion option.
+>
+  let g:recutils_no_autocompletion = 1
+<
 " vim:tw=78:ft=help

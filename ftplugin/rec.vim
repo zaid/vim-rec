@@ -59,3 +59,8 @@ if !get(g:, 'recutils_no_maps')
   nnoremap <buffer> <localleader>rs :Recsel<space>
   nnoremap <buffer> <localleader>rv :Rec2csv<space>
 endif
+
+"" Enable auto-completion for record sets
+if has('eval') && !get(g:, 'recutils_no_autocompletion')
+  setlocal omnifunc=reccomplete#Complete
+endif
