@@ -53,9 +53,20 @@ function! reccomplete#Complete(findstart, base) abort
 endfunction
 
 " Check if a line supports autocompletion (if it starts with a % or is an
-" empty line.
+" empty line between folds).
 function! s:LineSupportsAutocompletion(line) abort
-  return a:line =~ '^%' || strlen(trim(a:line)) == 0
+  let [bufferNumber, lineNumber, columnNumber, off] = getpos('.')
+  let previousLine = getline(l:lineNumber - 1)
+  let previousLineFolded = foldclosed(l:lineNumber - 1) != -1
+  let nextLine = getline(l:lineNumber + 1)
+  let nextLineFolded = foldclosed(l:lineNumber + 1) != -1
+
+  return a:line =~ '^%' ||
+        \ (
+        \   strlen(trim(a:line)) == 0 &&
+        \     (l:previousLineFolded || l:previousLine !~ '^\w') &&
+        \     (l:nextLineFolded || l:nextLine !~ '^\w')
+        \ )
 endfunction
 
 " Return the list of the record set descriptors.
