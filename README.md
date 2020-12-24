@@ -64,7 +64,7 @@ This plugin provides syntax highlighting and runtime support for [GNU Recutils](
 
 ## Auto-completion
 
-  Basic support for auto-completing record set properties is available (by using `C-X C-O` when in insert mode).
+  Basic support for auto-completing record set properties is available (by using `C-x C-o` when in insert mode).
   It can be disabled by setting the `g:recutils_no_autocompletion` variable to `1`.
 
 ## TODO

@@ -48,7 +48,7 @@ The above maps can be disabled by setting the g:recutils_no_maps option.
 AUTO COMPLETION                             *recutils-autocompletion*
 
 Basic support for auto-completing record set properties is available (by using
-C-X C-O while in insert mode).
+C-x C-o while in insert mode).
 
 It can be disabled by setting the g:recutils_no_autocompletion option.
 >
