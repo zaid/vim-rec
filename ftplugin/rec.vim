@@ -51,6 +51,8 @@ command! -nargs=* Recsel call rec#Recsel(<f-args>)
 command! -nargs=* Recinf call rec#Recinf(<f-args>)
 command! -nargs=* Recfix call rec#Recfix(<f-args>)
 command! -nargs=* Rec2csv call rec#Rec2csv(<f-args>)
+command! -nargs=* RecPreviousDescriptor call rec#RecPreviousDescriptor()
+command! -nargs=* RecNextDescriptor call rec#RecNextDescriptor()
 
 " Define command maps
 if !get(g:, 'recutils_no_maps')
@@ -58,6 +60,8 @@ if !get(g:, 'recutils_no_maps')
   nnoremap <buffer> <localleader>rn :Recinf<space>
   nnoremap <buffer> <localleader>rs :Recsel<space>
   nnoremap <buffer> <localleader>rv :Rec2csv<space>
+  nnoremap <silent> <buffer> <localleader>rN :RecNextDescriptor<cr>
+  nnoremap <silent> <buffer> <localleader>rP :RecPreviousDescriptor<cr>
 endif
 
 "" Enable auto-completion for record sets

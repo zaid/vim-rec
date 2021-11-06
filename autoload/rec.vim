@@ -25,6 +25,16 @@ function! rec#Rec2csv(...) abort
   call s:ExecuteCommand('rec2csv', s:GetBufferCallbackFunctions(a:000), a:000)
 endfunction
 
+" Find the previous record descriptor.
+function! rec#RecPreviousDescriptor() abort
+  call s:FindElement('\v^\%rec:', 1)
+endfunction
+
+" Find the next record descriptor.
+function! rec#RecNextDescriptor() abort
+  call s:FindElement('\v^\%rec:', 0)
+endfunction
+
 " Execute a command with arguments (either synchronously or asynchronously).
 function! s:ExecuteCommand(command, callbackFunctions, arguments) abort
   let commandWithArguments = [a:command]
@@ -165,4 +175,12 @@ function! s:AddCsvBuffer(filename) abort
   call deletebufline(l:csvBuffer, 1, '$')
 
   return l:csvBuffer
+endfunction
+
+" Find an element in the current buffer without wrapping around the end of
+" the file.
+function! s:FindElement(pattern, backwards) abort
+  let flags = a:backwards ? 'bW' : 'W'
+
+  call search(a:pattern, l:flags)
 endfunction

@@ -31,6 +31,11 @@ argument (unless you want to run the command on a different file).
 :Rec2csv {args}             Run rec2csv with the supplied arguments and
                             display the output in a split horizontal buffer
                             in the current window.
+
+:RecNextDescriptor          Jump to the next record descriptor.
+
+:RecPreviousDescriptor      Jump to the previous record descriptor.
+
 MAPS                                        *recutils-maps*
 
 These |recutils-commands| maps are available in the |recutils| buffers only.
@@ -39,6 +44,8 @@ These |recutils-commands| maps are available in the |recutils| buffers only.
 <localleader>rn             Populates the command line with :Recinf.
 <localleader>rs             Populates the command line with :Recsel.
 <localleader>rv             Populates the command line with :Rec2csv
+<localleader>rN             Jump to the next record descriptor.
+<localleader>rP             Jump to the previous record descriptor.
 
 The above maps can be disabled by setting the g:recutils_no_maps option.
 >

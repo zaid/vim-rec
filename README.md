@@ -23,6 +23,7 @@ This plugin provides syntax highlighting and runtime support for [GNU Recutils](
   * Folding for records. (can be disabled by setting the `g:recutils_no_folding` variable to `1`).
   * Command wrappers for `recsel`, `recfix`, `recinf` and `rec2csv`.
   * Auto-completion of record set properties.
+  * Record navigation commands and maps.
 
   See `help :recutils` for more information.
 
@@ -56,11 +57,13 @@ This plugin provides syntax highlighting and runtime support for [GNU Recutils](
 
 ## Command maps
 
-  There are 4 command maps defined (which can be disabled by setting the `g:recutils_no_maps` variable to `1`):
+  There are 6 command maps defined (which can be disabled by setting the `g:recutils_no_maps` variable to `1`):
   * `<localleader>rf` Invokes `:Recfix --check` on the current buffer.
   * `<localleader>rn` populates the Vim command line with `:Recinf`.
   * `<localleader>rs` populates the Vim command line with `:Recsel`.
   * `<localleader>rv` populates the Vim command line with `:Rec2csv`.
+  * `<localleader>rN` jumps to the next record descriptor.
+  * `<localleader>rP` jumps to the previous record descriptor..
 
 ## Auto-completion
 
