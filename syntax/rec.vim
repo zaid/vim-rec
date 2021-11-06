@@ -33,7 +33,7 @@ syntax match recNumber "\v\-?0[xX]\x+"
 highlight default link recComment Comment
 highlight default link recComparisonOperator Operator
 highlight default link recConstraintDeclaration Keyword
-highlight default link recField Identifier
+highlight default link recField Label
 highlight default link recKeyword Keyword
 highlight default link recMultilineMarker Special
 highlight default link recNumber Number
