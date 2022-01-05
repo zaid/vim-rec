@@ -233,7 +233,7 @@ function! s:ShowNeovimFloatingWindow(title, descriptor, linePosition) abort
   call nvim_buf_set_lines(l:descriptorBuffer, 0, -1, v:false, a:descriptor)
   call nvim_buf_set_option(l:descriptorBuffer, 'filetype', 'rec')
 
-  for key in ['q', '<Esc>', '<Leader>', '<CR>']
+  for key in ['q', '<Esc>', '<Leader>', '<CR>', '<C-C>']
     call nvim_buf_set_keymap(l:descriptorBuffer, 'n', key, ':close<CR>', #{silent: v:true, noremap: v:true})
   endfor
 
