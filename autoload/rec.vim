@@ -35,6 +35,21 @@ function! rec#RecNextDescriptor() abort
   call search('\v^\%rec:', 'W')
 endfunction
 
+" Show the current record descriptor block in a popup/preview window.
+function! rec#RecPreviewDescriptor() abort
+  let previousWindowView = winsaveview()
+  let previousDescriptorStart = search('\v^\%rec:', 'bW')
+  let previousDescriptorEnd = l:previousDescriptorStart > 0 ? search('\v^\n', 'W') : 0
+  let descriptorBlock = getline(l:previousDescriptorStart, l:previousDescriptorEnd - 1)
+
+  call winrestview(l:previousWindowView)
+
+  if s:SupportsPopups() && !empty(l:descriptorBlock)
+    call s:ShowPopupWindow(l:descriptorBlock)
+  else
+  endif
+endfunction
+
 " Execute a command with arguments (either synchronously or asynchronously).
 function! s:ExecuteCommand(command, callbackFunctions, arguments) abort
   let commandWithArguments = [a:command]
@@ -175,4 +190,28 @@ function! s:AddCsvBuffer(filename) abort
   call deletebufline(l:csvBuffer, 1, '$')
 
   return l:csvBuffer
+endfunction
+
+" Check if Vim was compiled with popup/floating window support.
+function! s:SupportsPopups() abort
+  return has('popupwin')
+endfunction
+
+" Show the popup window and populate it with the record descriptor block.
+function! s:ShowPopupWindow(descriptor) abort
+  let recordType = substitute(a:descriptor[0], '%rec: ', '', '')
+  let title = l:recordType . ' descriptor'
+  let linePosition = 'cursor-' . len(a:descriptor)
+
+  let windowId = popup_create(a:descriptor, s:VimPopupWindowOptions(l:linePosition, l:title))
+  call win_execute(windowId, 'setlocal filetype=rec')
+endfunction
+
+function! s:VimPopupWindowOptions(linePosition, title) abort
+  let options = #{
+        \ title: a:title, pos: 'botleft', line: a:linePosition, moved: 'any',
+        \ border: [], padding: []
+        \ }
+
+  return l:options
 endfunction
