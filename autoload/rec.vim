@@ -192,25 +192,63 @@ function! s:AddCsvBuffer(filename) abort
   return l:csvBuffer
 endfunction
 
-" Check if Vim was compiled with popup/floating window support.
+" Check if Vim/Neovim was compiled with popup/floating window support.
 function! s:SupportsPopups() abort
-  return has('popupwin')
+  return has('popupwin') || has('nvim')
 endfunction
 
 " Show the popup window and populate it with the record descriptor block.
 function! s:ShowPopupWindow(descriptor) abort
   let recordType = substitute(a:descriptor[0], '%rec: ', '', '')
   let title = l:recordType . ' descriptor'
-  let linePosition = 'cursor-' . len(a:descriptor)
+  let linePosition = len(a:descriptor)
 
-  let windowId = popup_create(a:descriptor, s:VimPopupWindowOptions(l:linePosition, l:title))
+  if has('popupwin')
+    call s:ShowVimPopupWindow(l:title, a:descriptor, l:linePosition)
+  elseif has('nvim')
+    call s:ShowNeovimFloatingWindow(l:title, a:descriptor, l:linePosition)
+  endif
+endfunction
+
+" Calls the underlying Vim functions to create the popup window.
+function! s:ShowVimPopupWindow(title, descriptor, linePosition) abort
+  let windowId = popup_create(a:descriptor, s:VimPopupWindowOptions(a:linePosition, a:title))
   call win_execute(windowId, 'setlocal filetype=rec')
 endfunction
 
+" Returns options specific to Vim's popup windows.
 function! s:VimPopupWindowOptions(linePosition, title) abort
   let options = #{
-        \ title: a:title, pos: 'botleft', line: a:linePosition, moved: 'any',
+        \ title: a:title, pos: 'botleft', line: 'cursor-'.a:linePosition, moved: 'any',
         \ border: [], padding: []
+        \ }
+
+  return l:options
+endfunction
+
+" Calls the underlying Neovim functions to create the floating window.
+function! s:ShowNeovimFloatingWindow(title, descriptor, linePosition) abort
+  let descriptorBuffer = nvim_create_buf(v:false, v:true)
+
+  call nvim_buf_set_lines(l:descriptorBuffer, 0, -1, v:false, a:descriptor)
+  call nvim_buf_set_option(l:descriptorBuffer, 'filetype', 'rec')
+
+  for key in ['q', '<Esc>', '<Leader>', '<CR>']
+    call nvim_buf_set_keymap(l:descriptorBuffer, 'n', key, ':close<CR>', #{silent: v:true, noremap: v:true})
+  endfor
+
+  let windowId = nvim_open_win(descriptorBuffer, 1, s:NeovimPopupWindowOptions(a:title, a:descriptor, a:linePosition))
+endfunction
+
+" Returns options specific to Neovim's popup windows.
+function! s:NeovimPopupWindowOptions(title, descriptor, linePosition) abort
+  let uiOptions = nvim_list_uis()[0]
+  let width = max(map(a:descriptor, 'len(v:val)'))
+
+  let options = #{
+        \ anchor: 'SE', row: -a:linePosition, style: 'minimal', col: l:uiOptions.width/2 + l:width/2,
+        \ border: 'single', relative: 'cursor', height: len(a:descriptor), width: l:width,
+        \ focusable: v:false, zindex: 50
         \ }
 
   return l:options
