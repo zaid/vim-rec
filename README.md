@@ -24,6 +24,7 @@ This plugin provides syntax highlighting and runtime support for [GNU Recutils](
   * Command wrappers for `recsel`, `recfix`, `recinf` and `rec2csv`.
   * Auto-completion of record set properties.
   * Record navigation commands and maps.
+  * Preview record descriptor in a popup/floating/preview window.
 
   See `help :recutils` for more information.
 
@@ -64,6 +65,7 @@ This plugin provides syntax highlighting and runtime support for [GNU Recutils](
   * `<localleader>rv` populates the Vim command line with `:Rec2csv`.
   * `<localleader>rN` jumps to the next record descriptor.
   * `<localleader>rP` jumps to the previous record descriptor..
+  * `<localleader>r?` show the current record descriptor in a popup/floating/preview window.
 
 ## Auto-completion
 
