@@ -58,6 +58,8 @@ https://user-images.githubusercontent.com/39915/148492614-d88d21cf-a6a2-4a18-a50
   can be rewritten as:
   `:Recsel -t Book -p Title -e Rating\ >\ 4` 
 
+  To close the floating window in Neovim, you can use any of the `q`, `Esc`, `<localleader>`, `Ctrl-C` or `<Cr>` keys.
+
 ## Command maps
 
   There are 6 command maps defined (which can be disabled by setting the `g:recutils_no_maps` variable to `1`):
@@ -66,7 +68,7 @@ https://user-images.githubusercontent.com/39915/148492614-d88d21cf-a6a2-4a18-a50
   * `<localleader>rs` populates the Vim command line with `:Recsel`.
   * `<localleader>rv` populates the Vim command line with `:Rec2csv`.
   * `<localleader>rN` jumps to the next record descriptor.
-  * `<localleader>rP` jumps to the previous record descriptor..
+  * `<localleader>rP` jumps to the previous record descriptor.
   * `<localleader>r?` show the current record descriptor in a popup/floating/preview window.
 
 ## Auto-completion
