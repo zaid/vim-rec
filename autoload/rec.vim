@@ -267,7 +267,6 @@ function! s:ShowPreviewWindow(descriptor) abort
   let filename = s:GetRecordDescriptorName(a:descriptor)
   let previewBuffer = bufadd(l:filename)
 
-  echom a:descriptor
   call bufload(l:previewBuffer)
   call deletebufline(l:previewBuffer, 1, '$')
   call appendbufline(l:previewBuffer, 1, a:descriptor)
