@@ -35,6 +35,22 @@ function! rec#RecNextDescriptor() abort
   call search('\v^\%rec:', 'W')
 endfunction
 
+" Show the current record descriptor block in a popup/preview window.
+function! rec#RecPreviewDescriptor() abort
+  let previousWindowView = winsaveview()
+  let previousDescriptorStart = search('\v^\%rec:', 'bW')
+  let previousDescriptorEnd = l:previousDescriptorStart > 0 ? search('\v^\n', 'W') : 0
+  let descriptorBlock = getline(l:previousDescriptorStart, l:previousDescriptorEnd - 1)
+
+  call winrestview(l:previousWindowView)
+
+  if s:SupportsPopups() && !empty(l:descriptorBlock)
+    call s:ShowPopupWindow(l:descriptorBlock)
+  else
+    call s:ShowPreviewWindow(l:descriptorBlock)
+  endif
+endfunction
+
 " Execute a command with arguments (either synchronously or asynchronously).
 function! s:ExecuteCommand(command, callbackFunctions, arguments) abort
   let commandWithArguments = [a:command]
@@ -175,4 +191,92 @@ function! s:AddCsvBuffer(filename) abort
   call deletebufline(l:csvBuffer, 1, '$')
 
   return l:csvBuffer
+endfunction
+
+" Check if Vim/Neovim was compiled with popup/floating window support.
+function! s:SupportsPopups() abort
+  return has('popupwin') || has('nvim')
+endfunction
+
+" Return record descriptor name from descriptor block.
+function! s:GetRecordDescriptorName(descriptor) abort
+  let recordType = substitute(a:descriptor[0], '%rec: ', '', '')
+
+  return l:recordType . ' descriptor'
+endfunction
+
+" Show the popup window and populate it with the record descriptor block.
+function! s:ShowPopupWindow(descriptor) abort
+  let title = s:GetRecordDescriptorName(a:descriptor)
+  let linePosition = len(a:descriptor)
+
+  if has('popupwin')
+    call s:ShowVimPopupWindow(l:title, a:descriptor, l:linePosition)
+  elseif has('nvim')
+    call s:ShowNeovimFloatingWindow(l:title, a:descriptor, l:linePosition)
+  endif
+endfunction
+
+" Calls the underlying Vim functions to create the popup window.
+function! s:ShowVimPopupWindow(title, descriptor, linePosition) abort
+  let windowId = popup_create(a:descriptor, s:VimPopupWindowOptions(a:linePosition, a:title))
+  call win_execute(windowId, 'setlocal filetype=rec')
+endfunction
+
+" Returns options specific to Vim's popup windows.
+function! s:VimPopupWindowOptions(linePosition, title) abort
+  let options = #{
+        \ title: a:title, pos: 'botleft', line: 'cursor-'.a:linePosition, moved: 'any',
+        \ border: [], padding: []
+        \ }
+
+  return l:options
+endfunction
+
+" Calls the underlying Neovim functions to create the floating window.
+function! s:ShowNeovimFloatingWindow(title, descriptor, linePosition) abort
+  let descriptorBuffer = nvim_create_buf(v:false, v:true)
+
+  call nvim_buf_set_lines(l:descriptorBuffer, 0, -1, v:false, a:descriptor)
+  call nvim_buf_set_option(l:descriptorBuffer, 'filetype', 'rec')
+
+  for key in ['q', '<Esc>', '<localleader>', '<CR>', '<C-C>']
+    call nvim_buf_set_keymap(l:descriptorBuffer, 'n', key, ':close<CR>', #{silent: v:true, noremap: v:true, nowait: v:true})
+  endfor
+
+  let windowId = nvim_open_win(descriptorBuffer, 1, s:NeovimPopupWindowOptions(a:title, a:descriptor, a:linePosition))
+  call win_execute(windowId, 'setlocal readonly')
+endfunction
+
+" Returns options specific to Neovim's popup windows.
+function! s:NeovimPopupWindowOptions(title, descriptor, linePosition) abort
+  let uiOptions = nvim_list_uis()[0]
+  let width = max(map(a:descriptor, 'len(v:val)'))
+
+  let options = #{
+        \ anchor: 'SE', row: -a:linePosition, style: 'minimal', col: l:uiOptions.width/2 + l:width/2,
+        \ border: 'single', relative: 'cursor', height: len(a:descriptor), width: l:width,
+        \ focusable: v:false, zindex: 50
+        \ }
+
+  return l:options
+endfunction
+
+" Show the preview window and populate it with the record descriptor block.
+function! s:ShowPreviewWindow(descriptor) abort
+  let filename = s:GetRecordDescriptorName(a:descriptor)
+  let previewBuffer = bufadd(l:filename)
+
+  call bufload(l:previewBuffer)
+  call deletebufline(l:previewBuffer, 1, '$')
+  call appendbufline(l:previewBuffer, 1, a:descriptor)
+
+  let windowId = bufwinid(l:previewBuffer)
+
+  if l:windowId < 0
+    execute 'pedit! ' . l:filename
+
+    let l:windowId = bufwinid(l:previewBuffer)
+    call win_execute(windowId, 'setlocal nonumber noswapfile nobuflisted buftype=nofile filetype=rec')
+  endif
 endfunction

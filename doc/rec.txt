@@ -46,6 +46,8 @@ These |recutils-commands| maps are available in the |recutils| buffers only.
 <localleader>rv             Populates the command line with :Rec2csv
 <localleader>rN             Jump to the next record descriptor.
 <localleader>rP             Jump to the previous record descriptor.
+<localleader>r?             Show the current record descriptor in a
+                            popup/floating/preview window.
 
 The above maps can be disabled by setting the g:recutils_no_maps option.
 >
