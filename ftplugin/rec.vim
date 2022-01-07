@@ -61,8 +61,8 @@ if !get(g:, 'recutils_no_maps')
   nnoremap <buffer> <localleader>rn :Recinf<space>
   nnoremap <buffer> <localleader>rs :Recsel<space>
   nnoremap <buffer> <localleader>rv :Rec2csv<space>
-  noremap <silent> <buffer> <localleader>rN :RecNextDescriptor<cr>
-  noremap <silent> <buffer> <localleader>rP :RecPreviousDescriptor<cr>
+  noremap <silent> <buffer> <localleader>r] :RecNextDescriptor<cr>
+  noremap <silent> <buffer> <localleader>r[ :RecPreviousDescriptor<cr>
   noremap <silent> <buffer> <localleader>r? :RecPreviewDescriptor<cr>
 endif
 

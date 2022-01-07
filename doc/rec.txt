@@ -44,8 +44,8 @@ These |recutils-commands| maps are available in the |recutils| buffers only.
 <localleader>rn             Populates the command line with :Recinf.
 <localleader>rs             Populates the command line with :Recsel.
 <localleader>rv             Populates the command line with :Rec2csv
-<localleader>rN             Jump to the next record descriptor.
-<localleader>rP             Jump to the previous record descriptor.
+<localleader>r]             Jump to the next record descriptor.
+<localleader>r[             Jump to the previous record descriptor.
 <localleader>r?             Show the current record descriptor in a
                             popup/floating/preview window.
 

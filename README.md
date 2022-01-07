@@ -67,8 +67,8 @@ https://user-images.githubusercontent.com/39915/148492614-d88d21cf-a6a2-4a18-a50
   * `<localleader>rn` populates the Vim command line with `:Recinf`.
   * `<localleader>rs` populates the Vim command line with `:Recsel`.
   * `<localleader>rv` populates the Vim command line with `:Rec2csv`.
-  * `<localleader>rN` jumps to the next record descriptor.
-  * `<localleader>rP` jumps to the previous record descriptor.
+  * `<localleader>r]` jumps to the next record descriptor.
+  * `<localleader>r[` jumps to the previous record descriptor.
   * `<localleader>r?` show the current record descriptor in a popup/floating/preview window.
 
 ## Auto-completion
