@@ -240,11 +240,12 @@ function! s:ShowNeovimFloatingWindow(title, descriptor, linePosition) abort
   call nvim_buf_set_lines(l:descriptorBuffer, 0, -1, v:false, a:descriptor)
   call nvim_buf_set_option(l:descriptorBuffer, 'filetype', 'rec')
 
-  for key in ['q', '<Esc>', '<Leader>', '<CR>', '<C-C>']
-    call nvim_buf_set_keymap(l:descriptorBuffer, 'n', key, ':close<CR>', #{silent: v:true, noremap: v:true})
+  for key in ['q', '<Esc>', '<localleader>', '<CR>', '<C-C>']
+    call nvim_buf_set_keymap(l:descriptorBuffer, 'n', key, ':close<CR>', #{silent: v:true, noremap: v:true, nowait: v:true})
   endfor
 
   let windowId = nvim_open_win(descriptorBuffer, 1, s:NeovimPopupWindowOptions(a:title, a:descriptor, a:linePosition))
+  call win_execute(windowId, 'setlocal readonly')
 endfunction
 
 " Returns options specific to Neovim's popup windows.
