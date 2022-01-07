@@ -51,8 +51,8 @@ command! -nargs=* Recsel call rec#Recsel(<f-args>)
 command! -nargs=* Recinf call rec#Recinf(<f-args>)
 command! -nargs=* Recfix call rec#Recfix(<f-args>)
 command! -nargs=* Rec2csv call rec#Rec2csv(<f-args>)
-command! -nargs=* RecPreviousDescriptor call rec#RecPreviousDescriptor()
-command! -nargs=* RecNextDescriptor call rec#RecNextDescriptor()
+command! RecPreviousDescriptor call rec#RecPreviousDescriptor()
+command! RecNextDescriptor call rec#RecNextDescriptor()
 command! RecPreviewDescriptor call rec#RecPreviewDescriptor()
 
 " Define command maps
