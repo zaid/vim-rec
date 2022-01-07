@@ -2,6 +2,8 @@
 
 This plugin provides syntax highlighting and runtime support for [GNU Recutils](https://www.gnu.org/software/recutils/)' .rec files.
 
+https://user-images.githubusercontent.com/39915/148492614-d88d21cf-a6a2-4a18-a50d-06c6935b9080.mov
+
 ## Installation
 
   * If you're on Vim 8.x then you can use the built-in package support by running:
