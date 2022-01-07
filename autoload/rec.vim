@@ -47,6 +47,7 @@ function! rec#RecPreviewDescriptor() abort
   if s:SupportsPopups() && !empty(l:descriptorBlock)
     call s:ShowPopupWindow(l:descriptorBlock)
   else
+    call s:ShowPreviewWindow(l:descriptorBlock)
   endif
 endfunction
 
@@ -197,10 +198,16 @@ function! s:SupportsPopups() abort
   return has('popupwin') || has('nvim')
 endfunction
 
+" Return record descriptor name from descriptor block.
+function! s:GetRecordDescriptorName(descriptor) abort
+  let recordType = substitute(a:descriptor[0], '%rec: ', '', '')
+
+  return l:recordType . ' descriptor'
+endfunction
+
 " Show the popup window and populate it with the record descriptor block.
 function! s:ShowPopupWindow(descriptor) abort
-  let recordType = substitute(a:descriptor[0], '%rec: ', '', '')
-  let title = l:recordType . ' descriptor'
+  let title = s:GetRecordDescriptorName(a:descriptor)
   let linePosition = len(a:descriptor)
 
   if has('popupwin')
@@ -252,4 +259,24 @@ function! s:NeovimPopupWindowOptions(title, descriptor, linePosition) abort
         \ }
 
   return l:options
+endfunction
+
+" Show the preview window and populate it with the record descriptor block.
+function! s:ShowPreviewWindow(descriptor) abort
+  let filename = s:GetRecordDescriptorName(a:descriptor)
+  let previewBuffer = bufadd(l:filename)
+
+  echom a:descriptor
+  call bufload(l:previewBuffer)
+  call deletebufline(l:previewBuffer, 1, '$')
+  call appendbufline(l:previewBuffer, 1, a:descriptor)
+
+  let windowId = bufwinid(l:previewBuffer)
+
+  if l:windowId < 0
+    execute 'pedit! ' . l:filename
+
+    let l:windowId = bufwinid(l:previewBuffer)
+    call win_execute(windowId, 'setlocal nonumber noswapfile nobuflisted buftype=nofile filetype=rec')
+  endif
 endfunction
