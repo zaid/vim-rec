@@ -36,6 +36,9 @@ argument (unless you want to run the command on a different file).
 
 :RecPreviousDescriptor      Jump to the previous record descriptor.
 
+:RecPreviewDescriptor       Show the current record descriptor in a
+                            |popup-window| / floating-window / |preview-window|.
+
 MAPS                                        *recutils-maps*
 
 These |recutils-commands| maps are available in the |recutils| buffers only.
