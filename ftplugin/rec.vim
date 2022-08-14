@@ -1,13 +1,21 @@
+" Only do this when not done yet for this buffer
+if exists('b:did_ftplugin')
+  finish
+endif
+
+" Don't load another plugin for this buffer
+let b:did_ftplugin = 1
+
+let s:cpo_save = &cpo
+set cpo&vim
+
 setlocal commentstring=#\ %s
 setlocal iskeyword+=%
 setlocal tabstop=2
 setlocal softtabstop=2
 setlocal shiftwidth=2
 
-" Only do this when not done yet for this buffer
-if exists('b:did_ftplugin')
-  finish
-endif
+let b:undo_ftplugin = 'setlocal commentstring< iskeyword< tabstop< softtabstop< shiftwidth<'
 
 " Return fold level for a given line
 function! GetRecFold(lnum) abort
@@ -44,6 +52,7 @@ endfunction
 if has('folding') && !get(g:, 'recutils_no_folding')
   setlocal foldmethod=expr
   setlocal foldexpr=GetRecFold(v:lnum)
+  let b:undo_ftplugin ..= ' | setlocal foldmethod< foldexpr<'
 endif
 
 " Define commands wrappers for GNU Recutils
@@ -64,9 +73,20 @@ if !get(g:, 'recutils_no_maps')
   noremap <silent> <buffer> <localleader>r] :RecNextDescriptor<cr>
   noremap <silent> <buffer> <localleader>r[ :RecPreviousDescriptor<cr>
   noremap <silent> <buffer> <localleader>r? :RecPreviewDescriptor<cr>
+  let b:undo_ftplugin ..= " | silent! execute 'nunmap <buffer> <localleader>rf'" ..
+	\                 " | silent! execute 'nunmap <buffer> <localleader>rn'" ..
+	\                 " | silent! execute 'nunmap <buffer> <localleader>rs'" ..
+	\                 " | silent! execute 'nunmap <buffer> <localleader>rv'" ..
+	\                 " | silent! execute 'unmap  <buffer> <localleader>r]'" ..
+	\                 " | silent! execute 'unmap  <buffer> <localleader>r['" ..
+	\                 " | silent! execute 'unmap  <buffer> <localleader>r?'"
 endif
 
 "" Enable auto-completion for record sets
 if has('eval') && !get(g:, 'recutils_no_autocompletion')
   setlocal omnifunc=reccomplete#Complete
+  let b:undo_ftplugin ..= ' | setlocal omnifunc<'
 endif
+
+let &cpo = s:cpo_save
+unlet s:cpo_save
